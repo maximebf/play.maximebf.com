@@ -6,13 +6,7 @@
   <title>Play · Games by Maxime</title>
   <meta name="description" content="Small games made by Maxime Bouroumeau-Fuseau. Pick one and play in your browser.">
   <meta name="theme-color" content="#120d24">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icons/icon-192.png" type="image/png">
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Play">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
@@ -20,7 +14,6 @@
     <ul class="catalog">
       <!--
         To add a game, copy one <li class="tile"> block: set the link and a 4:3 poster in games/.
-        Images under games/ referenced here are cached for offline use automatically (see sw.js).
       -->
       <li class="tile">
         <a href="https://nanodefenders.play.maximebf.com/">
@@ -30,8 +23,11 @@
     </ul>
   </main>
   <script>
+    // The site used to install an offline service worker. Remove it and its cache
+    // from devices that still have it. Safe to delete once old visitors have come back.
     if ('serviceWorker' in navigator) {
-      addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+      navigator.serviceWorker.getRegistrations().then((rs) => rs.forEach((r) => r.unregister()));
+      if (window.caches) caches.keys().then((ks) => ks.forEach((k) => caches.delete(k)));
     }
   </script>
 </body>
