@@ -5,14 +5,25 @@
 - **Save data in IndexedDB** through `idb-keyval`, with a versioned save object (`v: 1`). Also call `navigator.storage.persist()` so iOS doesn't clear it.
 - All text lives in one content file (`src/content/lines.json`), which is also the input for voice generation.
 
-## 2. Offline-first PWA (no Workbox)
+## 2. Web version and installable offline version (no Workbox)
+
+One build, one domain, two behaviors, chosen at boot:
+
+- **In a browser tab** the game starts at once and loads its files from the network like a normal website. No download screen, no service worker registered, and it doesn't work offline.
+- **Installed** (Home Screen / app window, detected with `matchMedia('(display-mode: fullscreen), (display-mode: standalone), (display-mode: minimal-ui)')` or `navigator.standalone` on iOS) the game downloads everything first and then works offline, as described below. `?offline` forces this mode in a browser tab for testing.
+- Don't use a separate domain for the two versions: saves live in IndexedDB per origin, so one domain lets the tab and the installed app share progress (on Android and desktop).
+- The web version must never *unregister* the service worker: on Android and desktop an installed copy shares the origin, and its worker, with the browser tab.
+- The parent area says which mode is running and whether the download is complete.
+
+How the offline version works:
 
 - A small Vite plugin runs after the build and writes `dist/precache.json`, a list of every file with its hash and size, then copies `src/sw-template.js` to `dist/sw.js`.
 - **The loading screen downloads the files, not the service worker.** It fetches the list, downloads only missing or changed files (6 at a time, 3 retries each) into Cache Storage, and shows a progress bar. `index.html` is downloaded last so a half-finished update can't load new HTML with old scripts. Files that are no longer in the list get deleted.
 - **Service worker:** page navigations try the network for up to 4 seconds and then fall back to the cache. Everything else is served from the cache first.
 - **Manifest:** `display: fullscreen`, a fixed orientation, and icons at 192, 512, maskable 512 and the Apple touch icon (made by `gen-icons.mjs` from a character image).
 - **iOS meta tags:** `apple-mobile-web-app-capable` and `black-translucent` status bar.
-- **Gotcha:** an app added to the iOS Home Screen has its own storage, separate from Safari's, so it downloads everything again on its first launch.
+- **Gotcha:** an app added to the iOS Home Screen has its own storage, separate from Safari's, so downloading in Safari would be wasted. This is why only the installed app downloads.
+- **Gotcha:** match the cache with `{ ignoreSearch: true, ignoreVary: true }`. Some servers (`vite preview`, for one) send `Vary: Origin`, and a module script request carries an `Origin` header that the loader's plain `fetch` didn't, so without `ignoreVary` the offline app finds no script.
 
 ## 3. Touch, iPad and desktop first, phones still work
 
