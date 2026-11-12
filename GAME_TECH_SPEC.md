@@ -52,6 +52,8 @@ Each generator is a build-time Node script, never something the game calls at ru
 
 - An assets-only Worker set up in `cloudflare.config.ts` with the `cf` CLI, SPA not-found handling and a custom domain. Deploy with `npm run deploy` (build, then `cf deploy dist`).
 - `.env` holds `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` along with the Gemini key.
+- **Domain:** each game gets `<game>.play.maximebf.com`, set as the default in `domains` in `cloudflare.config.ts`. On the first deploy, Cloudflare creates the DNS record (an `AAAA 100::`) and orders an advanced certificate from Google (`pki.goog`).
+- **CAA records are needed for every game subdomain.** `play.maximebf.com` is a CNAME to `maximebf.github.io`. Certificate authorities look up CAA records by going up the name tree, so `<game>.play.maximebf.com` inherits GitHub's CAA policy, which allows only DigiCert, Let's Encrypt and Sectigo. That blocks Google, and the certificate stays in `pending_validation` with "CAA records block issuance"; browsers then get a TLS handshake failure. Fix: add CAA records on the game's own hostname: `0 issue "pki.goog"`, `0 issuewild "pki.goog"`, `0 issue "letsencrypt.org"`, `0 issuewild "letsencrypt.org"`. Then wait for validation, or restart it under SSL/TLS → Edge Certificates. `marketmath` and `nanodefenders` have these records. Add them when creating a new game; existing games need them for certificate renewals.
 - **`public/_headers`:** `no-cache` on `/`, `index.html`, `sw.js`, `precache.json` and the manifest so installed apps pick up updates, and `immutable` on Vite's hashed bundles.
 
 ## 7. Other points worth adding
