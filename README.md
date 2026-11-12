@@ -10,7 +10,8 @@ A static catalog of my games, served by an assets-only Cloudflare Worker at http
 
 1. Put a 1200×900 poster in `games/<slug>.webp`.
 2. Copy an existing `<li class="tile">` block in `index.html`, then change the link, image and alt text.
-3. Run `npm run deploy` (needs `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in `.env`), then commit and push.
+3. Commit and push.
+4. Run `npm run deploy` (needs `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in `.env`).
 
 ## Hosting
 
