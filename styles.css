@@ -33,14 +33,21 @@ main {
     calc(var(--pad) + env(safe-area-inset-left));
 }
 
+/* Flexbox + a hard width on each tile: no grid track maths for Safari to disagree on. */
 .catalog {
   list-style: none;
   margin: 0 auto;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, min(100%, var(--tile)));
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: clamp(20px, 4vw, 40px);
+}
+
+.tile {
+  flex: 0 0 auto;
+  width: var(--tile);
+  max-width: 100%;
 }
 
 .tile a {
