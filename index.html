@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Play · Games by Maxime</title>
+  <meta name="description" content="Small games made by Maxime Bouroumeau-Fuseau. Pick one and play in your browser.">
+  <meta name="theme-color" content="#120d24">
+  <meta property="og:title" content="Play · Games by Maxime">
+  <meta property="og:description" content="Small games made by Maxime Bouroumeau-Fuseau. Pick one and play in your browser.">
+  <meta property="og:url" content="https://play.maximebf.com/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23ff5fa2'/><path d='M38 28 L76 50 L38 72 Z' fill='white'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow">play.maximebf.com</p>
+    <h1>Pick a game,<br><span>press play.</span></h1>
+    <p class="lede">Small games I make. They run right in your browser, nothing to install.</p>
+  </header>
+
+  <main>
+    <ul class="catalog">
+      <!--
+        To add a game, copy one <li class="tile"> block below:
+        set the link, the image in games/, the title, the blurb and the tags.
+        Keep the image 4:3 (800×600 WebP works well).
+      -->
+      <li class="tile" style="--accent: #4cc6f0; --accent-2: #ff6fa8;">
+        <a href="https://nanodefenders.play.maximebf.com/">
+          <figure class="cover">
+            <img src="games/nano-defenders.webp" width="800" height="600"
+                 alt="Nano Défenseurs poster: cheerful nanobots zapping grumpy viruses">
+            <span class="play" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+            </span>
+          </figure>
+          <div class="info">
+            <h2>Nano Défenseurs</h2>
+            <p>Program tiny robots to help the immune system stop a virus invasion. It starts as a tower defense and slowly turns into a coding game.</p>
+            <ul class="tags">
+              <li>Ages 7+</li>
+              <li>Tower defense</li>
+              <li>Coding</li>
+              <li>In French</li>
+            </ul>
+          </div>
+        </a>
+      </li>
+
+      <li class="tile soon" aria-label="More games coming">
+        <div class="soon-inner">
+          <span class="dice" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i>
+          </span>
+          <p>More games on the way</p>
+        </div>
+      </li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>Made by <a href="https://maximebf.com">Maxime Bouroumeau-Fuseau</a></p>
+  </footer>
+</body>
+</html>
